@@ -4,6 +4,7 @@ import { InputGroup } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import { Form } from 'react-bootstrap'
 import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 const SignUp = () => {
     let emailRef = useRef()
@@ -24,7 +25,8 @@ const SignUp = () => {
         }
         const user = {
             email : enteredMail,
-            password : enteredPassword
+            password : enteredPassword,
+            returnSecureToken: true
         }
        
         try{
@@ -91,14 +93,14 @@ const SignUp = () => {
           />
         </InputGroup>
         
-          <Button onClick={signupHandler} type={'submit'}>
+          <Button variant='success' onClick={signupHandler} type={'submit'}>
              Create Account
           </Button>
 
           </Form>
       </Card.Body>
 
-      <p className=' my-2 text-success rounded-3'>Have an Account? <span style={{'cursor': 'pointer'}} className='text-danger'>Login</span></p>
+      <p className=' my-2 text-dark rounded-3'>Have an Account? <span style={{'cursor': 'pointer'}} className='text-danger'><Link to={'/login'}>Log in</Link></span></p>
 
 
     </Card>
