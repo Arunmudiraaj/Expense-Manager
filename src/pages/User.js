@@ -2,8 +2,14 @@ import React from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import axios from 'axios'
 
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 const User = () => {
+
+  const navigate = useNavigate()
+  const logoutHandler = ()=>{
+    localStorage.setItem('loginId', "")
+    navigate('/login')
+  }
   const verifyEmailHandler = async()=>{
     try{
       const res = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAqOS8u_DY_416ZUUb74B1gvkk7C47c4Cs',{
@@ -30,6 +36,11 @@ const User = () => {
   }
   return (
     <Container>
+         <Row>
+        <Col className='text-end my-3'>
+          <Button variant='danger' onClick={logoutHandler} className=''>Log out</Button>
+        </Col>
+      </Row>
       <Row>
         <Col>
         <div className='text-center'>Welcome to expense Tracker</div>
