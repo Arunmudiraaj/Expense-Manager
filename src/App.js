@@ -4,6 +4,7 @@ import SignUp from "./pages/SignUp";
 import { Route,Routes,NavLink } from "react-router-dom";
 import User from "./pages/User";
 import CompleteProfile from "./pages/CompleteProfile";
+import ForgotPassword from "./pages/ForgotPassword";
 function App() {
   return (
     <div className="">
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login" element={<Login/>}/>
         <Route path="/user" element={<User/>}/>
         <Route path="/completeprofile" element={<CompleteProfile/>}/>
+        <Route path="/forgotpassword" element={<ForgotPassword/>}/>
       </Routes>
     </div>
   );

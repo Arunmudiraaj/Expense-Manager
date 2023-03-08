@@ -71,8 +71,8 @@ const Login = () => {
             aria-describedby="inputGroup-sizing-default"
           />
         </InputGroup>
-        
-          <Button onClick={loginHandler} type={'submit'}>
+          <Link to={'/forgotpassword'}>Forgot Password?</Link> <br/>
+          <Button className='mt-2' onClick={loginHandler} type={'submit'}>
              Log in
           </Button>
 
