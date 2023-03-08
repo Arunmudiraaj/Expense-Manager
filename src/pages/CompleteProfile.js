@@ -36,6 +36,7 @@ const CompleteProfile = () => {
         }
         catch(error){
             console.log(error)
+            alert("Something went wrong. Try after logging in again")
         }
        
     }
