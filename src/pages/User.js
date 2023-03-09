@@ -3,6 +3,8 @@ import { Button, Col, Container, Row } from 'react-bootstrap'
 import axios from 'axios'
 
 import { Link, useNavigate } from 'react-router-dom'
+import Input from '../Components/Input'
+import AllExpenses from '../Components/AllExpenses'
 const User = () => {
 
   const navigate = useNavigate()
@@ -41,18 +43,23 @@ const User = () => {
           <Button variant='danger' onClick={logoutHandler} className=''>Log out</Button>
         </Col>
       </Row>
-      <Row>
+      <Row className='my-2'>
         <Col>
         <div className='text-center'>Welcome to expense Tracker</div>
         </Col>
         <Col>
         <div className='text-center'>Your profile is incomplete. <Link style={{'cursor': 'pointer'}} className='text-danger' to={'/completeprofile'}>Complete now</Link></div>
         </Col>
-      </Row>
-      <Row>
-        <Col className='text-center my-3'>
+        <Col className='text-center'>
           <Button onClick={verifyEmailHandler} className=''>Verify email</Button>
         </Col>
+      </Row>
+
+      <Row>
+       <Input/>
+      </Row>
+      <Row>
+        <AllExpenses/>
       </Row>
     </Container>
     
