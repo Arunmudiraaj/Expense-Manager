@@ -1,7 +1,8 @@
 import React from 'react'
 import { Table } from 'react-bootstrap'
 
-const AllExpenses = () => {
+const AllExpenses = (props) => {
+   
   return (
     <div className=''>
         <p className='text-center'>--Your List Of Expenses--</p>
@@ -14,11 +15,12 @@ const AllExpenses = () => {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td className='text-center'>$ 100</td>
-                    <td className='text-center'>Weekend movie</td>
-                    <td className='text-center'>Entertainment</td>
-                </tr>
+                {Object.keys(props.expenses).map(key =><tr key={key}>
+                    <td className='text-center'>{props.expenses[key].amount}</td>
+                    <td className='text-center'>{props.expenses[key].title}</td>
+                    <td className='text-center'>{props.expenses[key].category}</td>
+                </tr>)}
+               
             </tbody>
         </Table>
     </div>

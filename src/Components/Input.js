@@ -3,14 +3,24 @@ import { Button, Table } from 'react-bootstrap'
 import { Form } from 'react-bootstrap'
 import { InputGroup } from 'react-bootstrap'
 import { useRef } from 'react'
-import { Alert } from 'react-bootstrap'
-const Input = () => {
+import axios from 'axios'
+const Input = (props) => {
     const amountRef = useRef()
     const descRef = useRef()
     const categoryRef = useRef()
 
-    const addExpenseHandler = ()=>{
-
+    const addExpenseHandler = async()=>{
+        const item = {
+            title : descRef.current.value.trim(),
+            amount : amountRef.current.value,
+            category : categoryRef.current.value
+        }
+        const res = await axios.post('https://expense-tracker-6ca30-default-rtdb.firebaseio.com/expenses.json',item)
+        if (res.statusText==="OK"){
+            props.addItem(res.data.name,item)
+        }
+        console.log(res)
+        
     }
   return (
     <div className='m-2'>
@@ -21,6 +31,7 @@ const Input = () => {
                     <Form.Label>Enter the Amount</Form.Label>
                     <InputGroup className="">
                     <Form.Control
+                        type='number'
                         placeholder='Amount'
                         ref={amountRef}
                         aria-label="Default"

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import axios from 'axios'
 
@@ -6,7 +6,20 @@ import { Link, useNavigate } from 'react-router-dom'
 import Input from '../Components/Input'
 import AllExpenses from '../Components/AllExpenses'
 const User = () => {
+  const [expensesData, setExpensesData] = useState({})
 
+  const addItemHandler = (id,item)=>{
+    setExpensesData(pre=>{
+      const updated = {...pre}
+      updated[id] = item
+      return updated
+    })
+  }
+  const getData = async()=>{
+    const res = await axios.get('https://expense-tracker-6ca30-default-rtdb.firebaseio.com/expenses.json')
+    setExpensesData(res.data)
+  }
+  useEffect(()=>{getData()},[])
   const navigate = useNavigate()
   const logoutHandler = ()=>{
     localStorage.setItem('loginId', "")
@@ -56,10 +69,10 @@ const User = () => {
       </Row>
 
       <Row>
-       <Input/>
+       <Input addItem={addItemHandler}/>
       </Row>
       <Row>
-        <AllExpenses/>
+        <AllExpenses expenses = {expensesData}/>
       </Row>
     </Container>
     
