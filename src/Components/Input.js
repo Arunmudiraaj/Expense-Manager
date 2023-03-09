@@ -4,12 +4,35 @@ import { Form } from 'react-bootstrap'
 import { InputGroup } from 'react-bootstrap'
 import { useRef } from 'react'
 import axios from 'axios'
+import { useContext } from 'react'
+import EditIdContext from '../Context/EditIdContext'
 const Input = (props) => {
+    const editCtx = useContext(EditIdContext)
     const amountRef = useRef()
     const descRef = useRef()
     const categoryRef = useRef()
 
     const addExpenseHandler = async()=>{
+        if(editCtx.id){
+            const item = {
+                title : descRef.current.value.trim(),
+                amount : amountRef.current.value,
+                category : categoryRef.current.value
+            }
+            try{
+                const res = await axios.put(`https://expense-tracker-6ca30-default-rtdb.firebaseio.com/expenses/${editCtx.id}.json`,item)
+            editCtx.updateId(null)
+            console.log("Edited")
+            }
+            catch(err){
+                console.log(err)
+                alert("Something went wrong. Try Again")
+            }
+            
+            return
+        }
+
+        else{
         const item = {
             title : descRef.current.value.trim(),
             amount : amountRef.current.value,
@@ -20,7 +43,7 @@ const Input = (props) => {
             props.addItem(res.data.name,item)
         }
         console.log(res)
-        
+    }
     }
   return (
     <div className='m-2'>

@@ -15,6 +15,7 @@ const User = () => {
       return updated
     })
   }
+
   const getData = async()=>{
     const res = await axios.get('https://expense-tracker-6ca30-default-rtdb.firebaseio.com/expenses.json')
     setExpensesData(res.data)
