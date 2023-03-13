@@ -8,11 +8,14 @@ import AllExpenses from '../Components/AllExpenses'
 import { useDispatch } from 'react-redux'
 import { authActions } from '../Store/authentication'
 import { useSelector } from 'react-redux'
+import { themeActions } from '../Store/theme'
 const User = () => {
   const totalAmount = useSelector(state => state.expenses.totalAmount)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  
+  const toggleThemeHandler = ()=>{
+    dispatch(themeActions.toggleTheme())
+  }
   const logoutHandler = ()=>{
     localStorage.setItem('loginId', "")
     localStorage.setItem('email', "")
@@ -48,7 +51,7 @@ const User = () => {
   }
   }
   return (
-    <Container>
+    <Container >
          <Row>
         <Col className='text-end my-3'>
           <Button variant='danger' onClick={logoutHandler} className=''>Log out</Button>
@@ -65,15 +68,15 @@ const User = () => {
           <Button onClick={verifyEmailHandler} className=''>Verify email</Button>
         </Col>
        {Number(totalAmount)>1000 && <Col className='text-center'>
-          <Button variant='success'>Activate Premium</Button>
+          <Button onClick={toggleThemeHandler} variant='success'>Activate Premium</Button>
         </Col>}
       </Row>
 
       <Row>
        <Input/>
       </Row>
-      <Row>
-        <AllExpenses/>
+      <Row className=''>
+        <AllExpenses />
       </Row>
     </Container>
     

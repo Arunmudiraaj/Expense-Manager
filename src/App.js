@@ -5,9 +5,11 @@ import { Route,Routes,NavLink } from "react-router-dom";
 import User from "./pages/User";
 import CompleteProfile from "./pages/CompleteProfile";
 import ForgotPassword from "./pages/ForgotPassword";
+import { useSelector } from "react-redux";
 function App() {
+  const dark = useSelector(state=> state.theme.dark)
   return (
-    <div className="">
+    <div className={`${dark? 'bg-black text-white min-vh-100': ''}`}>
       <div>
         <NavLink to={'/signup'}>Sign Up</NavLink>
         <NavLink to={'/login'}>Log In</NavLink>

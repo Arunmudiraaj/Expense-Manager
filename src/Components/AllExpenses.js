@@ -7,10 +7,14 @@ import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { expensesActions } from '../Store/expenses'
 const AllExpenses = () => {
-
+    const makeCsv = (arr)=>{
+        const newArr = arr.map(item => [item.title, item.amount, item.category])
+        newArr.unshift(["TITLE", "AMOUNT", "CATEGORY"])
+        return newArr.map(row => row.join(",")).join("\n")
+       }
+    const dark = useSelector(state=> state.theme.dark)
     const dispatch = useDispatch()
    const allItems = useSelector(state => state.expenses.items)
-
    const getData = async()=>{
     const res = await axios.get('https://expense-tracker-6ca30-default-rtdb.firebaseio.com/expenses.json')
     const keys = Object.keys(res.data)
@@ -43,10 +47,12 @@ const AllExpenses = () => {
    const editItem = async(id)=>{
          dispatch(expensesActions.updateEditId(id))    
    }
+  
+   const blob = new Blob([makeCsv(allItems)])
   return (
     <div className=''>
         <p className='text-center'>--Your List Of Expenses--</p>
-        <Table>
+        <Table className={`${dark? 'bg-black text-white': ''}`}>
             <thead>
                 <tr>
                     <th className='text-center'>Amount 💵</th>
@@ -67,6 +73,9 @@ const AllExpenses = () => {
                
             </tbody>
         </Table>
+        {dark && <div className='text-center'>
+            <a download={'expenses.csv'} href={URL.createObjectURL(blob)} className={`${dark? 'text-warning': ''}`}>DownLoad</a>
+        </div>}
     </div>
   )
 }

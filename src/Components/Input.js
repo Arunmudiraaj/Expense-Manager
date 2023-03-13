@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { expensesActions } from '../Store/expenses'
 import { useDispatch } from 'react-redux'
 const Input = () => {
+    const dark = useSelector(state=> state.theme.dark)
     const dispatch = useDispatch()
     const editId = useSelector(state => state.expenses.editId)
     const amountRef = useRef()
@@ -52,7 +53,7 @@ const Input = () => {
     }
   return (
     <div className='m-2'>
-        <Table className='my-4'>
+        <Table className={`my-4 ${dark? 'bg-black text-white': ''}`}>
             <thead className='m-2'>
                 <tr>
                     <th>
