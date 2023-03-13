@@ -6,8 +6,11 @@ import { Form } from 'react-bootstrap'
 import { useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { authActions } from '../Store/authentication'
 
 const Login = () => {
+  const dispatch = useDispatch()
     const navigate = useNavigate()
     const emailRef = useRef()
     const passwordRef = useRef()
@@ -28,6 +31,10 @@ const Login = () => {
             const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAqOS8u_DY_416ZUUb74B1gvkk7C47c4Cs', user)
             localStorage.setItem('email', response.data.email)
             localStorage.setItem('loginId', response.data.idToken)
+            dispatch(authActions.updateAuth({
+              loginId : response.data.idToken,
+              email : response.data.email
+            }))
             console.log(response.data.email)
             console.log(response.data.idToken)
             navigate('/user')

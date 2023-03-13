@@ -4,24 +4,27 @@ import { Form } from 'react-bootstrap'
 import { InputGroup } from 'react-bootstrap'
 import { useRef } from 'react'
 import axios from 'axios'
-import { useContext } from 'react'
-import EditIdContext from '../Context/EditIdContext'
-const Input = (props) => {
-    const editCtx = useContext(EditIdContext)
+import { useSelector } from 'react-redux'
+import { expensesActions } from '../Store/expenses'
+import { useDispatch } from 'react-redux'
+const Input = () => {
+    const dispatch = useDispatch()
+    const editId = useSelector(state => state.expenses.editId)
     const amountRef = useRef()
     const descRef = useRef()
     const categoryRef = useRef()
-
     const addExpenseHandler = async()=>{
-        if(editCtx.id){
+        if(editId){
             const item = {
                 title : descRef.current.value.trim(),
                 amount : amountRef.current.value,
                 category : categoryRef.current.value
             }
             try{
-                const res = await axios.put(`https://expense-tracker-6ca30-default-rtdb.firebaseio.com/expenses/${editCtx.id}.json`,item)
-            editCtx.updateId(null)
+                const res = await axios.put(`https://expense-tracker-6ca30-default-rtdb.firebaseio.com/expenses/${editId}.json`,item)
+                console.log(res)
+                dispatch(expensesActions.updateEditId(null))
+            dispatch(expensesActions.editExpense({id: editId, item: item}))
             console.log("Edited")
             }
             catch(err){
@@ -40,9 +43,11 @@ const Input = (props) => {
         }
         const res = await axios.post('https://expense-tracker-6ca30-default-rtdb.firebaseio.com/expenses.json',item)
         if (res.statusText==="OK"){
-            props.addItem(res.data.name,item)
+            const serverItem = {...item, id: res.data.name}
+            dispatch(expensesActions.addExpense(serverItem))
+            console.log(serverItem)
         }
-        console.log(res)
+        
     }
     }
   return (
@@ -83,6 +88,7 @@ const Input = (props) => {
                         <option value="fuel">Fuel</option>
                         <option value="clothes">Clothes</option>
                         <option value="grocessary">Grocessary</option>
+                        <option value="others">Others</option>
                     </Form.Select>
                     </th>
                     <th>

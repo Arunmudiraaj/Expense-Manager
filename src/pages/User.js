@@ -1,31 +1,28 @@
-import React, { useEffect, useState } from 'react'
+
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import axios from 'axios'
 
 import { Link, useNavigate } from 'react-router-dom'
 import Input from '../Components/Input'
 import AllExpenses from '../Components/AllExpenses'
+import { useDispatch } from 'react-redux'
+import { authActions } from '../Store/authentication'
+import { useSelector } from 'react-redux'
 const User = () => {
-  const [expensesData, setExpensesData] = useState({})
-
-  const addItemHandler = (id,item)=>{
-    setExpensesData(pre=>{
-      const updated = {...pre}
-      updated[id] = item
-      return updated
-    })
-  }
-
-  const getData = async()=>{
-    const res = await axios.get('https://expense-tracker-6ca30-default-rtdb.firebaseio.com/expenses.json')
-    setExpensesData(res.data)
-  }
-  useEffect(()=>{getData()},[])
+  const totalAmount = useSelector(state => state.expenses.totalAmount)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
+  
   const logoutHandler = ()=>{
     localStorage.setItem('loginId', "")
+    localStorage.setItem('email', "")
+    dispatch(authActions.updateAuth({
+      loginId : '',
+      email : ''
+    }))
     navigate('/login')
   }
+
   const verifyEmailHandler = async()=>{
     try{
       const res = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAqOS8u_DY_416ZUUb74B1gvkk7C47c4Cs',{
@@ -67,13 +64,16 @@ const User = () => {
         <Col className='text-center'>
           <Button onClick={verifyEmailHandler} className=''>Verify email</Button>
         </Col>
+       {Number(totalAmount)>1000 && <Col className='text-center'>
+          <Button variant='success'>Activate Premium</Button>
+        </Col>}
       </Row>
 
       <Row>
-       <Input addItem={addItemHandler}/>
+       <Input/>
       </Row>
       <Row>
-        <AllExpenses expenses = {expensesData}/>
+        <AllExpenses/>
       </Row>
     </Container>
     

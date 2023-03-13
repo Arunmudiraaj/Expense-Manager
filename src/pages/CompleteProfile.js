@@ -3,11 +3,13 @@ import Button from 'react-bootstrap/Button'
 import { Form } from 'react-bootstrap'
 import { useRef } from 'react'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
 const CompleteProfile = () => {
     const fullNameRef = useRef()
     const photoUrl = useRef()
+    const loginId = useSelector(state=>state.authentication.loginId)
     const getUserData = async()=>{
-        const res = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyAqOS8u_DY_416ZUUb74B1gvkk7C47c4Cs',{idToken : localStorage.getItem('loginId')})
+        const res = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyAqOS8u_DY_416ZUUb74B1gvkk7C47c4Cs',{idToken : loginId})
         console.log(res)
         fullNameRef.current.value = res.data.users[0].displayName
         photoUrl.current.value = res.data.users[0].photoUrl
@@ -24,7 +26,7 @@ const CompleteProfile = () => {
             return
         }
         const updatedData = {
-            idToken : localStorage.getItem('loginId'),
+            idToken : loginId,
             displayName : enteredNewName,
             photoUrl : url,
             returnSecureToken : true
