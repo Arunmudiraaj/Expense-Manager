@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { expensesActions } from '../Store/expenses'
 import { useDispatch } from 'react-redux'
 const Input = () => {
+    const email = useSelector(state=> state.authentication.email)  
     const dark = useSelector(state=> state.theme.dark)
     const dispatch = useDispatch()
     const editId = useSelector(state => state.expenses.editId)
@@ -22,7 +23,7 @@ const Input = () => {
                 category : categoryRef.current.value
             }
             try{
-                const res = await axios.put(`https://expense-tracker-6ca30-default-rtdb.firebaseio.com/expenses/${editId}.json`,item)
+                const res = await axios.put(`https://expense-tracker-6ca30-default-rtdb.firebaseio.com/${localStorage.getItem('email')}/${editId}.json`,item)
                 console.log(res)
                 dispatch(expensesActions.updateEditId(null))
             dispatch(expensesActions.editExpense({id: editId, item: item}))
@@ -42,7 +43,7 @@ const Input = () => {
             amount : amountRef.current.value,
             category : categoryRef.current.value
         }
-        const res = await axios.post('https://expense-tracker-6ca30-default-rtdb.firebaseio.com/expenses.json',item)
+        const res = await axios.post(`https://expense-tracker-6ca30-default-rtdb.firebaseio.com/${localStorage.getItem('email')}.json`,item)
         if (res.statusText==="OK"){
             const serverItem = {...item, id: res.data.name}
             dispatch(expensesActions.addExpense(serverItem))

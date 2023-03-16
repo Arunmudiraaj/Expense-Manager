@@ -12,11 +12,12 @@ const AllExpenses = () => {
         newArr.unshift(["TITLE", "AMOUNT", "CATEGORY"])
         return newArr.map(row => row.join(",")).join("\n")
        }
+     const email = useSelector(state=> state.authentication.email)  
     const dark = useSelector(state=> state.theme.dark)
     const dispatch = useDispatch()
    const allItems = useSelector(state => state.expenses.items)
    const getData = async()=>{
-    const res = await axios.get('https://expense-tracker-6ca30-default-rtdb.firebaseio.com/expenses.json')
+    const res = await axios.get(`https://expense-tracker-6ca30-default-rtdb.firebaseio.com/${localStorage.getItem('email')}.json`)
     const keys = Object.keys(res.data)
     const expenses = keys.map( key => { return {
         id : key,
@@ -36,7 +37,7 @@ const AllExpenses = () => {
 
    const deleteItem = async(id)=>{
     console.log(id)
-    const res = await axios.delete(`https://expense-tracker-6ca30-default-rtdb.firebaseio.com/expenses/${id}.json`)
+    const res = await axios.delete(`https://expense-tracker-6ca30-default-rtdb.firebaseio.com/${email}/${id}.json`)
     if (res.statusText==="OK"){
         dispatch(expensesActions.removeExpense(id))
         console.log("Deleted successfully")
